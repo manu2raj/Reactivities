@@ -1,0 +1,8 @@
+npm install : to install all dependency in package.config file
+npm run dev: to start react application
+
+
+CQRS: Command query resouce segregation
+Commamd: does something, modify state, should not return state
+Qurey:
+

@@ -1,3 +1,4 @@
+using Application.Activities.Queries;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
 
@@ -36,8 +38,8 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<AppDbContext>();
-    await context.Database.MigrateAsync();
-    await DBInitializer.SeedData(context);
+    await context.Database.MigrateAsync();              // Apply pending migration, create DB if not exist
+    await DBInitializer.SeedData(context);              // Create dummy data if not exist
 }
 catch (Exception ex)
 {

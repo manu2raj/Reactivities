@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "UdmeyActivities",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Add Photo
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/api/profiles/add-photo
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  File: @file(/Users/neilc/Desktop/ApiPhotos/bat3.jpg)
+}

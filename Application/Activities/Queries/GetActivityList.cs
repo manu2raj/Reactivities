@@ -9,17 +9,11 @@ namespace Application.Activities.Queries
     {
         public class Query : IRequest<List<Activity>> { }
 
-        public class Handler: IRequestHandler<Query, List<Activity>>
+        public class Handler(AppDbContext context) : IRequestHandler<Query, List<Activity>>
         {
-            private readonly Persistence.AppDbContext _context;
-            public Handler(Persistence.AppDbContext context)
-            {
-                _context = context;
-            }
-
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.ToListAsync(cancellationToken);
+                return await context.Activities.ToListAsync(cancellationToken);
             }
         }
     }

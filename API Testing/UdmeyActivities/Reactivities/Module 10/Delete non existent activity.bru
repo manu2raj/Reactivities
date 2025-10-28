@@ -1,0 +1,15 @@
+meta {
+  name: Delete non existent activity
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{url}}/api/activities/d51e33de-105b-4549-96d9-8ba2c7b05a30
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}

@@ -1,5 +1,5 @@
 import { Grid2 } from "@mui/material";
-import ActivityList from "./dashborad/ActivityList";
+import ActivityList from "./ActivityList";
 
 type Props = {
     activities: Activity[];

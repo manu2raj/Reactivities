@@ -2,6 +2,7 @@ import { Container, CssBaseline, List, ListItem, ListItemText } from "@mui/mater
 import axios from "axios";
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
+import ActivityDashborad from "../../features/activities/ActivityDashborad";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -16,14 +17,7 @@ function App() {
     <CssBaseline />
     <NavBar />
     <Container maxWidth="xl" sx={{mt: 3}}>
-      <List>
-        {activities.map(activity => (
-          <ListItem key={activity.id}>
-            <ListItemText>{activity.title}</ListItemText>
-          </ListItem>
-        ))}
-
-      </List>
+      <ActivityDashborad activities={activities}/>
     </Container>      
     </>
   )

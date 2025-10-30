@@ -32,6 +32,18 @@ function App() {
     setEditMode(false);
   }
 
+  const handleSubmitForm = (activity: Activity) => {
+    // TODO submit form
+    if (activity.id) {
+      setActivities(activities.map(a => a.id === activity.id ? activity : a));
+    } else {      
+      const newActivity = {...activity, id: (activities.length + 1).toString()};
+      setSelectedActivity(newActivity);
+      setActivities([...activities, newActivity]);
+    } 
+    setEditMode(false);
+    
+  }
   return (
     <Box sx={{bgcolor: '#eeeeee'}}>
       <CssBaseline />
@@ -45,6 +57,7 @@ function App() {
           editMode={editMode}
           openForm={handleOpenForm}
           closeForm={handleCloseForm}
+          submitForm={handleSubmitForm}
           />
       </Container>      
     </Box>

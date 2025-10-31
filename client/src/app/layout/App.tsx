@@ -1,21 +1,24 @@
-import { Box, Container, CssBaseline } from "@mui/material";
+import { Box, Container, CssBaseline, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NavBar from "./NavBar";
 import ActivityDashborad from "../../features/activities/dashborad/ActivityDashborad";
+import { useQuery } from "@tanstack/react-query";
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
   
-  useEffect(() => {
-    axios.get<Activity[]>('https://localhost:5001/api/activities')
-      .then(response => setActivities(response.data));
-  }, []);
+  const {data: activities, isPending} = useQuery({
+    queryKey: ['activities'],
+    queryFn: async () => { 
+      const response = await axios.get<Activity[]>('https://localhost:5001/api/activities');
+      return response.data;
+    }  
+  })
 
   const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.find(a => a.id === id));
+    setSelectedActivity(activities!.find(a => a.id === id));
   }
 
   const handleCancelSelectActivity = () => {
@@ -33,18 +36,20 @@ function App() {
   }
 
   const handleSubmitForm = (activity: Activity) => {   
-    if (activity.id) {
-      setActivities(activities.map(a => a.id === activity.id ? activity : a));
-    } else {      
-      const newActivity = {...activity, id: (activities.length + 1).toString()};
-      setSelectedActivity(newActivity);                 // Show newly created activity in detail view
-      setActivities([...activities, newActivity]);      // Add new activity to the list
-    } 
+    // if (activity.id) {
+    //   setActivities(activities.map(a => a.id === activity.id ? activity : a));
+    // } else {      
+    //   const newActivity = {...activity, id: (activities.length + 1).toString()};
+    //   setSelectedActivity(newActivity);                 // Show newly created activity in detail view
+    //   setActivities([...activities, newActivity]);      // Add new activity to the list
+    // } 
+    console.log(activity);
     setEditMode(false);    
   }
   
   const handleDeleteActivity = (id: string) => {
-    setActivities(activities.filter(a => a.id !== id));
+    console.log(id);  
+    // setActivities(activities.filter(a => a.id !== id));
   }
 
   return (
@@ -52,17 +57,24 @@ function App() {
       <CssBaseline />
       <NavBar  openForm={handleOpenForm}/>
       <Container maxWidth="xl" sx={{mt: 3}}>
-        <ActivityDashborad 
-          activities={activities}
-          selectActivity={handleSelectActivity}
-          cancelSelectActivity={handleCancelSelectActivity}
-          selectedActivity={selectedActivity} 
-          editMode={editMode}
-          openForm={handleOpenForm}
-          closeForm={handleCloseForm}
-          submitForm={handleSubmitForm}
-          deleteActivity={handleDeleteActivity}
-          />
+        {!activities || isPending ? (
+          <Typography>
+            Loading
+          </Typography>
+        ) : (
+          <ActivityDashborad 
+            activities={activities}
+            selectActivity={handleSelectActivity}
+            cancelSelectActivity={handleCancelSelectActivity}
+            selectedActivity={selectedActivity} 
+            editMode={editMode}
+            openForm={handleOpenForm}
+            closeForm={handleCloseForm}
+            submitForm={handleSubmitForm}
+            deleteActivity={handleDeleteActivity}
+            />
+        )}
+        
       </Container>      
     </Box>
   )

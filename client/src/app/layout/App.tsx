@@ -32,18 +32,21 @@ function App() {
     setEditMode(false);
   }
 
-  const handleSubmitForm = (activity: Activity) => {
-    // TODO submit form
+  const handleSubmitForm = (activity: Activity) => {   
     if (activity.id) {
       setActivities(activities.map(a => a.id === activity.id ? activity : a));
     } else {      
       const newActivity = {...activity, id: (activities.length + 1).toString()};
-      setSelectedActivity(newActivity);
-      setActivities([...activities, newActivity]);
+      setSelectedActivity(newActivity);                 // Show newly created activity in detail view
+      setActivities([...activities, newActivity]);      // Add new activity to the list
     } 
-    setEditMode(false);
-    
+    setEditMode(false);    
   }
+  
+  const handleDeleteActivity = (id: string) => {
+    setActivities(activities.filter(a => a.id !== id));
+  }
+
   return (
     <Box sx={{bgcolor: '#eeeeee'}}>
       <CssBaseline />
@@ -58,6 +61,7 @@ function App() {
           openForm={handleOpenForm}
           closeForm={handleCloseForm}
           submitForm={handleSubmitForm}
+          deleteActivity={handleDeleteActivity}
           />
       </Container>      
     </Box>

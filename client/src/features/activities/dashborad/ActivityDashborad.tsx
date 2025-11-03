@@ -34,7 +34,7 @@ export default function ActivityDashborad({activities, selectActivity, cancelSel
                 {selectedActivity &&   /*If selectedActivity is not undefined then show ActivityDetail*/
                     !editMode &&
                     <ActivityDetail 
-                        activity={selectedActivity} 
+                        selectedActivity={selectedActivity} 
                         cancelSelectActivity={cancelSelectActivity}
                         openForm={openForm}
                     />

@@ -2,13 +2,9 @@ import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import type { FormEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
 
-type Props = {
-    activity?: Activity;
-    closeForm: () => void;
-}
-
-export default function ActivityForm({activity, closeForm}: Props) {
+export default function ActivityForm() {
     const { updateActivity, createActivity } = useActivities();
+    const activity = {} as Activity; // Replace with actual activity data when editing
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();     // Prevent default form submission behavior
@@ -23,11 +19,9 @@ export default function ActivityForm({activity, closeForm}: Props) {
         if(activity) {  // If activity exists, we are updating
             data.id = activity.id;
             await updateActivity.mutate(data as unknown as Activity);
-            closeForm();
         }
         else {  // Creating new activity    
             await createActivity.mutate(data as unknown as Activity);
-            closeForm();
         }
     }
 
@@ -48,7 +42,7 @@ export default function ActivityForm({activity, closeForm}: Props) {
             <TextField name="city"  label='City'  defaultValue={activity?.city} />
             <TextField name="venue"  label='Venue'  defaultValue={activity?.venue} />
             <Box display={"flex"} justifyContent='end' gap={3}>
-                <Button onClick={closeForm} color='inherit' >Cancel</Button>
+                <Button onClick={()=>{}} color='inherit' >Cancel</Button>
                 <Button 
                     type="submit" 
                     color='success' 

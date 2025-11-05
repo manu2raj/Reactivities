@@ -8,21 +8,25 @@ type Props = {
 }
 
 export default function ActivityForm({activity, closeForm}: Props) {
-    const { updateActivity } = useActivities();
+    const { updateActivity, createActivity } = useActivities();
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        event.preventDefault();     // Prevent default form submission behavior
 
-        const formData = new FormData(event.currentTarget);
-        const data: {[key: string]: FormDataEntryValue} = {};
+        const formData = new FormData(event.currentTarget);     // Create FormData from the form element
+        const data: {[key: string]: FormDataEntryValue} = {};   // Initialize empty object to hold form data
 
-        formData.forEach((value, key) => {
+        formData.forEach((value, key) => {  // Convert FormData to a regular object
             data[key] = value;
         });
         
-        if(activity) {
+        if(activity) {  // If activity exists, we are updating
             data.id = activity.id;
             await updateActivity.mutate(data as unknown as Activity);
+            closeForm();
+        }
+        else {  // Creating new activity    
+            await createActivity.mutate(data as unknown as Activity);
             closeForm();
         }
     }
@@ -49,7 +53,7 @@ export default function ActivityForm({activity, closeForm}: Props) {
                     type="submit" 
                     color='success' 
                     variant="contained"
-                    disabled={updateActivity.isPending}
+                    disabled={updateActivity.isPending || createActivity.isPending}
                 >Submit</Button>
             </Box>
         </Box>

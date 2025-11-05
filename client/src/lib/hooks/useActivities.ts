@@ -31,11 +31,21 @@ export const useActivities = () => {
     }
   });
 
+    const deleteActivity = useMutation ({   // Mutation for deleting an activity
+    mutationFn: async (id: string) => {
+      await agent.delete(`/activities/${id}`);  // Send DELETE request to delete activity
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['activities'] });  //  Invalidate activities query to refetch data
+    }
+  });
+
   return {    // Return activities and mutation functions
      activities,
      isPending,
      updateActivity,
-     createActivity
+     createActivity,
+     deleteActivity
     };
 }
 

@@ -1,10 +1,12 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import type { FormEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
+import { useNavigate, useParams } from "react-router";
 
 export default function ActivityForm() {
-    const { updateActivity, createActivity } = useActivities();
-    const activity = {} as Activity; // Replace with actual activity data when editing
+    const {id} = useParams();
+    const { updateActivity, createActivity, activity, isLoadingActivity } = useActivities(id);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();     // Prevent default form submission behavior
@@ -19,11 +21,17 @@ export default function ActivityForm() {
         if(activity) {  // If activity exists, we are updating
             data.id = activity.id;
             await updateActivity.mutate(data as unknown as Activity);
+            navigate(`/activities/${activity.id}`);
         }
         else {  // Creating new activity    
-            await createActivity.mutate(data as unknown as Activity);
+            createActivity.mutate(data as unknown as Activity, {
+            onSuccess: (id) => {
+                navigate(`/activities/${id}`)
+            }});            
         }
     }
+
+    if (isLoadingActivity) { return <Typography>Loading...</Typography>; }
 
     return (
     <Paper sx={{borderRadius: 3, p: 3}}>

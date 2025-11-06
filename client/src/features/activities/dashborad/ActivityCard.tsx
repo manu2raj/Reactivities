@@ -20,13 +20,13 @@ export default function ActivityCard({activity}: Props) {
         <CardActions sx={{display: 'flex', justifyContent: 'space-between', pb:2}}>
             <Chip label={activity.category} variant="outlined" />
             <Box display='flex' gap={3}>
+                <Button component={Link} to={`/activities/${activity.id}`} size="medium" 
+                  variant="contained">View</Button>
                 <Button onClick={() => deleteActivity.mutate(activity.id)}
                  disabled={deleteActivity.isPending}
                  size="medium" 
                  variant="contained"
-                 color="error">Delete</Button>
-                <Button component={Link} to={`/activities/${activity.id}`} size="medium" 
-                  variant="contained">View</Button>
+                 color="error">Delete</Button>                
             </Box>            
         </CardActions>
     </Card>

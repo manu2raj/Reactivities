@@ -33,7 +33,8 @@ export const useActivities = (id?: string) => {
 
   const createActivity = useMutation ({   // Mutation for creating a new activity
     mutationFn: async (activity: Activity) => {
-      await agent.post('/activities', activity);  // Send POST request to create activity
+      const response = await agent.post('/activities', activity);  // Send POST request to create activity
+      return response.data;
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['activities'] });  //  Invalidate activities query to refetch data

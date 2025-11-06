@@ -36,7 +36,7 @@ export default function ActivityForm() {
     return (
     <Paper sx={{borderRadius: 3, p: 3}}>
         <Typography variant="h5" color="primary">
-            Create activities
+            {activity ? 'Edit Activity' : 'Create Activities'}
         </Typography>
         <Box component='form' onSubmit={handleSubmit} display='flex' flexDirection='column' gap={3}>
             <TextField name="title" label='Title' defaultValue={activity?.title} />
@@ -50,7 +50,7 @@ export default function ActivityForm() {
             <TextField name="city"  label='City'  defaultValue={activity?.city} />
             <TextField name="venue"  label='Venue'  defaultValue={activity?.venue} />
             <Box display={"flex"} justifyContent='end' gap={3}>
-                <Button onClick={()=>{}} color='inherit' >Cancel</Button>
+                <Button color='inherit' >Cancel</Button>
                 <Button 
                     type="submit" 
                     color='success' 

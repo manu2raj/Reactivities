@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Domain;
 using Persistence;
+using Application.Activities.DTOs;
+using AutoMapper;
 
 namespace Application.Activities.Commands
 {
@@ -8,16 +10,17 @@ namespace Application.Activities.Commands
     {
         public class Command : IRequest<string>
         {
-            public required Activity Activity { get; set; }
+            public required CreateActivityDto ActivityDto { get; set; }
         }
 
-        public class Handler(AppDbContext context) : IRequestHandler<Command, string>
+        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
         {
             public async Task<string> Handle(Command request, CancellationToken cancellationToken)
             {
-                context.Activities.Add(request.Activity);
+                var activity = mapper.Map<Activity>(request);
+                context.Activities.Add(activity);
                 await context.SaveChangesAsync(cancellationToken);
-                return request.Activity.Id;
+                return activity.Id;
             }
         }
     }

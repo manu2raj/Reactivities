@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Activities.DTOs;
+using AutoMapper;
 using Domain;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Application.Core
         {
             // CreateMap<Source, Destination>();
             CreateMap<Activity, Activity>();
+            CreateMap<CreateActivityDto, Activity>();
         }
     }
 }

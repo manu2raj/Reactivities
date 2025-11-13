@@ -16,6 +16,7 @@ namespace Application.Core
             // CreateMap<Source, Destination>();
             CreateMap<Activity, Activity>();
             CreateMap<CreateActivityDto, Activity>();
+
         }
     }
 }

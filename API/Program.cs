@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -23,9 +24,11 @@ builder.Services.AddMediatR(cfg => {
     });
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+builder.Services.AddTransient<ExceptionMiddleware>();   // Its instance will be created, then required
+
 
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x=> x.AllowAnyHeader()
                 .AllowAnyMethod()
                 .WithOrigins("http://localhost:3000","https://localhost:3000"));

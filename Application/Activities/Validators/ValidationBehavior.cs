@@ -4,7 +4,7 @@ using MediatR;
 namespace Application.Activities.Validators
 {
     /// <summary>
-    /// Generic middleware, to validate input request.
+    /// Generic validation behaviour, to validate input request.
     /// </summary>
     /// <typeparam name="TRequest"></typeparam>
     /// <typeparam name="TResponse"></typeparam>

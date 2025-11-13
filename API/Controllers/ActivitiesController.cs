@@ -17,6 +17,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivityDetail(string id)
         {
+            throw new Exception("Manually throw exception");
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));
         }
 

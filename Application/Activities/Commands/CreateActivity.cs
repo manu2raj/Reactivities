@@ -19,7 +19,7 @@ namespace Application.Activities.Commands
         {
             public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = mapper.Map<Activity>(request);
+                var activity = mapper.Map<Activity>(request.ActivityDto);
 
                 context.Activities.Add(activity);
 

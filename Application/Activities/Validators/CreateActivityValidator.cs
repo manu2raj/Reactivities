@@ -1,4 +1,5 @@
 ﻿using Application.Activities.Commands;
+using Application.Activities.DTOs;
 using FluentValidation;
 
 namespace Application.Activities.Validators
@@ -16,56 +17,15 @@ namespace Application.Activities.Validators
     /// </remarks>
     /// <seealso cref="CreateActivity.Command"/>
     /// <seealso cref="CreateActivityDto"/>
-    public class CreateActivityValidator : AbstractValidator<CreateActivity.Command>
+    public class CreateActivityValidator : BaseActivityValidator<CreateActivity.Command, CreateActivityDto>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateActivityValidator"/> class
         /// and registers the validation rules for the request DTO.
         /// </summary>
-        public CreateActivityValidator()
+        public CreateActivityValidator() : base(x => x.ActivityDto)
         {
-            // Ensure the Title of the activity is provided.
-            RuleFor(x => x.ActivityDto.Title)
-                .NotEmpty()
-                .WithMessage("Title is required")
-                .MaximumLength(100).WithMessage("Title must not exceed 100 characters");
-
-            // Ensure the Description of the activity is provided.
-            RuleFor(x => x.ActivityDto.Description)
-                .NotEmpty()
-                .WithMessage("Description is required");
-
-            RuleFor(x => x.ActivityDto.Date)
-                .GreaterThan(DateTime.UtcNow).WithMessage("Date must be in the future");
-
-            // Ensure the Category of the activity is provided.
-            RuleFor(x => x.ActivityDto.Category)
-                .NotEmpty()
-                .WithMessage("Category is required");
-
-            // Ensure the City of the activity is provided.
-            RuleFor(x => x.ActivityDto.City)
-                .NotEmpty()
-                .WithMessage("City is required");
-
-            // Ensure the Venue of the activity is provided.
-            RuleFor(x => x.ActivityDto.Venue)
-                .NotEmpty()
-                .WithMessage("Venue is required");
-
-            // Ensure the Latitue of the activity is provided.
-            RuleFor(x => x.ActivityDto.Latitude)
-                .NotEmpty()
-                .WithMessage("Latitude is required")
-                .InclusiveBetween(-90,90)
-                .WithMessage("Latitude must be in between -90 and 90");
-
-            // Ensure the Longitude of the activity is provided.
-            RuleFor(x => x.ActivityDto.Longitude)
-                .NotEmpty()
-                .WithMessage("Longitude is required")
-                .InclusiveBetween(-180, 180)
-                .WithMessage("Longiture must be in between -180 and 180");
+            // Move all contant to baseActivityValidator
         }
     }
 }

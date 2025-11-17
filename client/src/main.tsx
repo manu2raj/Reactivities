@@ -12,17 +12,22 @@ import { RouterProvider } from 'react-router';
 import { router } from './app/router/Routes.tsx';
 import { store, StoreContext } from './lib/stores/store.ts';
 import { ToastContainer } from 'react-toastify';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <StoreContext.Provider value={store} >
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />    {/*  React Query Devtools for debugging */}
-        <ToastContainer position='bottom-right' hideProgressBar theme='colored'/>
-        <RouterProvider router={router} />    {/* Provide the router to the application */}
-      </QueryClientProvider>                {/* Provide the QueryClient to the application */}
-    </StoreContext.Provider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <StoreContext.Provider value={store} >
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />    {/*  React Query Devtools for debugging */}
+          <ToastContainer position='bottom-right' hideProgressBar theme='colored'/>
+          <RouterProvider router={router} />    {/* Provide the router to the application */}
+        </QueryClientProvider>                {/* Provide the QueryClient to the application */}
+      </StoreContext.Provider>
+    </LocalizationProvider>
+    
   </StrictMode>,
 )

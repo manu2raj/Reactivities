@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextInput from "../../../app/shared/components/TextInput";
 import SelectInput from "../../../app/shared/components/SelectInput";
 import { categoryOptions } from "./categoryOptions";
+import DateTimeInput from "../../../app/shared/components/DateTimeInput";
 
 export default function ActivityForm() {
     const { control, reset, handleSubmit } = useForm<ActivitySchema>({
@@ -39,7 +40,7 @@ export default function ActivityForm() {
              label='category' 
              control={control}
              name='category' />
-            <TextInput label='date' control={control} name='date' />
+            <DateTimeInput label='date' control={control} name='date' />
             <TextInput label='city' control={control} name='city' />
             <TextInput label='venue' control={control} name='venue' />
             <Box display={"flex"} justifyContent='end' gap={3}>

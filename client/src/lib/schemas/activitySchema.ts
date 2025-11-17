@@ -12,8 +12,7 @@ export const activitySchema = z.object({
         message: 'Date is required'
     }),
     city: requiredString('City'),
-    venue: requiredString('Venue'),
-    // title: z.string().min(10, { message: 'Title is required' })
+    venue: requiredString('Venue')
 })
 
 export type ActivitySchema = z.infer<typeof activitySchema>;

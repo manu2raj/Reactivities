@@ -29,13 +29,16 @@ export type LocationIQSuggestion = {
 
 export type LocationIQAddress = {
   name: string
+  house_number: string
   suburb?: string
   county: string
   state: string
   country: string
   country_code: string
   town?: string
+  village?: string
   city?: string
   road?: string
   postcode?: string
+  neighbourhood?: string
 }

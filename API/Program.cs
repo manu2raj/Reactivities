@@ -2,7 +2,9 @@ using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Domain;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
@@ -25,13 +27,20 @@ builder.Services.AddMediatR(cfg => {
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();   // Its instance will be created, then required
-
+builder.Services.AddIdentityApiEndpoints<User>(opt =>
+{
+    opt.User.RequireUniqueEmail = true;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x=> x.AllowAnyHeader()
                 .AllowAnyMethod()
                 .WithOrigins("http://localhost:3000","https://localhost:3000"));
+app.UseAuthentication();
+app.UseAuthorization();
 //// Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
@@ -43,6 +52,9 @@ app.UseCors(x=> x.AllowAnyHeader()
 //app.UseAuthorization();
 
 app.MapControllers();
+
+// MapIdentityApi: Add endpoints for registering, logging in, and logging out using ASP.NET Core Identity.
+app.MapGroup("api").MapIdentityApi<User>(); //api.login
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

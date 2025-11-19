@@ -62,8 +62,9 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
     await context.Database.MigrateAsync();              // Apply pending migration, create DB if not exist
-    await DBInitializer.SeedData(context);              // Create dummy data if not exist
+    await DBInitializer.SeedData(context, userManager);              // Create dummy data if not exist
 }
 catch (Exception ex)
 {

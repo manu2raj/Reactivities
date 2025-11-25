@@ -5,15 +5,25 @@ namespace Persistence
 {
     public class DBInitializer
     {
-        
-         /// <summary>
-         /// Seed initial data into the database if no activities exist.
-         /// </summary>
-         /// <param name="context">The database context to use for seeding data.</param>
-         /// <returns>A task representing the asynchronous operation.</returns>
+
+        /// <summary>
+        /// Seed initial data into the database if no activities exist.
+        /// </summary>
+        /// <param name="context">The database context to use for seeding data.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
         {
-            if (!userManager.Users.Any()) 
+            // SeedUserData: Add dummy data for users
+            await SeedUserData(userManager);
+
+            // SeedActivitiesData: Add dummy data for activities
+            if (context.Activities.Any()) return;
+            else await SeedActivitiesData(context);
+        }
+
+        public static async Task SeedUserData(UserManager<User> userManager)
+        {
+            if (!userManager.Users.Any())
             {
                 var users = new List<User>()
                 {
@@ -27,9 +37,10 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
+        }
 
-            if (context.Activities.Any()) return;
-
+        public static async Task SeedActivitiesData(AppDbContext context)
+        {
             var activities = new List<Activity>
             {
                 new() {
@@ -145,4 +156,4 @@ namespace Persistence
             await context.SaveChangesAsync();
         }
     }
-} 
+}

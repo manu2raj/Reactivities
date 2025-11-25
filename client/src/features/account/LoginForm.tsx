@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 
 export default function LoginForm() {
@@ -53,7 +53,12 @@ export default function LoginForm() {
                 size="large"
             >
                 Login
-            </Button>            
+            </Button>
+            <Typography 
+            sx={{textAlign: 'center'}}>
+                Don't have an account? 
+                <Typography sx={{ml: 1}} component={Link} to='/register' color="primary">Sign Up</Typography>
+            </Typography>            
         </Paper>
     )
 }

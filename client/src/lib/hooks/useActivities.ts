@@ -2,28 +2,30 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../agent";
 import { useLocation } from "react-router";
 import type { Activity } from "../types";
+import { useAccount } from "./useAccount";
 
 export const useActivities = (id?: string) => {
   const queryClient = useQueryClient();   // Get the QueryClient instance
+  const {currentUser} = useAccount();
   const location = useLocation();
 
 // Placeholder for activity state and logic
-  const {data: activities, isPending} = useQuery({    // Fetch activities using React Query
+  const {data: activities, isLoading} = useQuery({    // Fetch activities using React Query
     queryKey: ['activities'],                         // Unique key for the query
     queryFn: async () => {                            // Function to fetch activities
       const response = await agent.get<Activity[]>('/activities');  // Send GET request to fetch activities
       return response.data;                         // Return the data from the response
     },
-    enabled: !id && location.pathname === '/activities'
+    enabled: !id && location.pathname === '/activities'  && !!currentUser
   })
   
   const {data: activity , isLoading: isLoadingActivity} = useQuery({    // Fetch a single activity by ID
-    queryKey: ['activity', id],                         
+    queryKey: ['activities', id],                         
     queryFn: async () => {                                              // Function to fetch activities
       const response = await agent.get<Activity>(`/activities/${id}`);  // Send GET request to fetch activities
       return response.data;                                             // Return the data from the response
     },                                                                  // Function to fetch a single activity
-    enabled: !!id,                                                      // Only run this query if id is provided
+    enabled: !!id && !!currentUser                                                     // Only run this query if id is provided
   })  
 
   const updateActivity = useMutation ({   // Mutation for updating an activity
@@ -56,7 +58,7 @@ export const useActivities = (id?: string) => {
 
   return {    // Return activities and mutation functions
      activities,
-     isPending,
+     isLoading,
      updateActivity,
      createActivity,
      deleteActivity,

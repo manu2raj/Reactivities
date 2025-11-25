@@ -9,7 +9,9 @@ const sleep = (delay: number) => {  // Function to simulate network delay
     })};
 
 const agent = axios.create({              // Create an Axios instance
-  baseURL: import.meta.env.VITE_API_URL   // Set base URL from environment variable
+  baseURL: import.meta.env.VITE_API_URL,  // Set base URL from environment variable
+    withCredentials: true                 // The withCredentials property within AxiosRequestConfig is a boolean flag that controls whether 
+                                          // or not cross- site Access - Control requests should be made using credentials.These credentials can include cookies, authentication headers, or TLS client certificates. 
 });
 
 agent.interceptors.request.use(config => {  

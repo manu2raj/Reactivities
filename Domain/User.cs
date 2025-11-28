@@ -8,5 +8,8 @@ namespace Domain
         public string?   Bio { get; set; }
         public string? ImageUrl { get; set; }
 
+        //nav prop
+        public ICollection<ActivityAttendee> Activities { get; set; }
+
     }
 }

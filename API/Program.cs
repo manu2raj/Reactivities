@@ -4,6 +4,8 @@ using Application.Activities.Validators;
 using Application.Core;
 using Domain;
 using FluentValidation;
+using Infrastructure;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -28,6 +30,7 @@ builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));   // As we dont know type in program class, so we pass comma (,)  inside angle bracket. This is for validation
     });
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();   // Its instance will be created, then required
